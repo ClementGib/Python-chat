@@ -3,8 +3,9 @@
  
 import socket, sys
  
-HOST = 'localhost'
+HOST = '10.22.0.41'
 PORT = 15555
+#PORT = 30000
  
 # 1) création du socket :
 mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -15,6 +16,7 @@ try:
 except socket.error:
   print("La connexion a échoué.")
   sys.exit()
+
 print("Connexion établie avec le serveur.")
  
 # 3) Dialogue avec le serveur :

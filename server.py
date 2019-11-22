@@ -3,6 +3,8 @@
 import socket
 import sys
 import threading
+from multiprocessing import Process
+import time
 from info import info
 
 
@@ -26,29 +28,43 @@ class Server:
 
 
 
-    def GererClient(self,dico):
-        print("Hello")
+    def GererClient(self,indice):
+        
+        print("Client %s connecté." % (indice))
+        self.connexions[indice-1]("Vous êtes connecté au serveur . Envoyez vos messages.")
+        # msgClient = connexion.recv(1024)
+        # while 1:
+        #     print "C>", msgClient
+        #     if msgClient.upper() == "FIN" or msgClient =="":
+        #         break
+        #     msgServeur = raw_input("S> ")
+        #     connexion.send(msgServeur)
+        #     msgClient = connexion.recv(1024)
+        
 
 
 
 
     def GererSession(self):
-        threads = []
+        #self.threads = []
         while 1:
             #Attente de la requête de connexion d'un client :
             print("Serveur de chat prêt, attente de connexion")
             self.mySocket.listen(5)
 
+
             #Connexion et ajout de l'host et de l'ip au dictionaire (VERIFIER) :
             connexion, adresse = self.mySocket.accept()
+            self.sessions[self.counter] = {adresse}  
+            self.connexions.append(connexion)
             self.counter +=1
-            self.sessions[connexion] = adresse        
-            #print("Client connecté, adresse IP et port : %s" % (self.sessions[self.counter-1])
-
-            print(self.sessions)
-            thread = threading.Thread(target=GererClient, arg=(self.sessions[self.counter-1],))
-            threads.append(thread)
-            thread.start()
+            
+            print("Client connecté, adresse IP et port : %s" % (self.sessions))
+            self.GererClient(self.counter)
+            
+            #thread = threading.Thread(target=self.GererClient, arg=(self.sessions[self.counter-1],))
+            #threads.append(thread)
+            #thread.start()
     
 
 
@@ -65,6 +81,7 @@ class Server:
         # compteur de connexions actives
         self.counter = 0	
         self.sessions = {}
+        self.connexions = []
 
         #Création du socket
         self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

@@ -6,6 +6,7 @@ sync avec création de la fiche "client";
 redirection des messages;
 déconnexion, suppresion fiche;
 
+
 CLIENT : 
 Création fiche client;
 connexion server;

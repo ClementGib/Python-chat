@@ -59,5 +59,3 @@ class info:
     def show_fiche(self):
         return self.identite + ' '+ self.location + ' ' + self.get_user_sociopro
 
-User1 = info(info.get_user_id(), info.get_user_sociopro(), info.get_user_location())
-User1.show_fiche()
