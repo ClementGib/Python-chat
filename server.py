@@ -30,17 +30,13 @@ class Server:
 
     def GererClient(self,indice):
         
-        print("Client %s connecté." % (indice))
-        self.connexions[indice-1]("Vous êtes connecté au serveur . Envoyez vos messages.")
-        # msgClient = connexion.recv(1024)
-        # while 1:
-        #     print "C>", msgClient
-        #     if msgClient.upper() == "FIN" or msgClient =="":
-        #         break
-        #     msgServeur = raw_input("S> ")
-        #     connexion.send(msgServeur)
-        #     msgClient = connexion.recv(1024)
+        print("Client %s connecté." % (self.connexions[indice-1]))
+        self.connexions[indice].send("Vous êtes connecté au serveur. Envoyez vos messages.".encode('utf-8'))
         
+        msgClient = self.connexions[indice].recv(1024)
+        print(msgClient)
+        while 1:
+            self.GereMessages(indice,msgClient)
 
 
 
@@ -56,19 +52,16 @@ class Server:
             #Connexion et ajout de l'host et de l'ip au dictionaire (VERIFIER) :
             connexion, adresse = self.mySocket.accept()
             self.sessions[self.counter] = {adresse}  
+            self.sessions["echange"] = 0
             self.connexions.append(connexion)
-            self.counter +=1
+            
             
             print("Client connecté, adresse IP et port : %s" % (self.sessions))
             self.GererClient(self.counter)
-            
+            self.counter +=1
             #thread = threading.Thread(target=self.GererClient, arg=(self.sessions[self.counter-1],))
             #threads.append(thread)
             #thread.start()
-    
-
-
-
 
 
     # constructeur
@@ -96,23 +89,23 @@ class Server:
 
 
 
-    def GererCommand(message):
-        if message == '/END':
-            #Fermeture de la connexion :
-            connexion.send("fin".encode("Utf8"))
-            print("Connexion interrompue.")
-            connexion.close()
-        
-            return 1
+    def GereMessages(self,indice,message):
+        if(self.sessions["echange"]==1):
+            exit(0)
+        elif message[0] == '/':
+            if message == '/EXIT':
+                #Fermeture de la connexion :
+                self.connexions[indice].send("fin".encode("Utf8"))
+                print("Connexion interrompue.")
+                self.connexions[indice].close()       
+                return 1
 
-        elif message == '/LIST':
-        #lister les utilisateur connecté
-            print("Lister les utilisateurs ")
+            elif message == '/LIST':
+            #lister les utilisateur connecté
+                print("Lister les utilisateurs ")
 
-        elif message == '/CHANGE':
-            print("Changer d'utilisateur : ")
-
-
+            elif message == '/CHANGE':
+                print("Changer d'utilisateur : ")
 
     # def Listen():
         
