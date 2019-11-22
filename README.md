@@ -22,5 +22,5 @@ age
 
 1. Configurer le main avec votre adresse IP
 2. Lancer serveur via le main.py
-3. configurer les clients avec l'adresse ip du serveur
+3. configurer les clients avec l'adresse IP du serveur
 4. executer les clients
