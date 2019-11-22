@@ -109,6 +109,8 @@ class Server:
                 #Fermeture de la connexion :
                 self.connexions[indice].send("fin".encode("Utf8"))
                 print("Connexion interrompue.")
+                del self.user[indice]
+                del self.sessions[indice]
                 self.connexions[indice].close()       
                 return 1
             
