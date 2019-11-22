@@ -3,6 +3,7 @@
 import socket
 import sys
 import threading
+from info import info
 
 
 
@@ -10,7 +11,22 @@ import threading
 class Server:
 
 
-    def GererClient(dico):
+    def SubClient(self):
+
+        id=input("Entrer votre identite : ")
+    
+        age=18
+        #while (isinstance(age=input("Entrer votre age : "), int)):
+
+        
+        location = input("Entrer votre location : ")
+        sociopro = input("Entrer votre sociopro : ")
+        info_client = info(id,age,location,sociopro)
+
+
+
+
+    def GererClient(self,dico):
         print("Hello")
 
 
@@ -29,10 +45,10 @@ class Server:
             self.sessions[connexion] = adresse        
             #print("Client connecté, adresse IP et port : %s" % (self.sessions[self.counter-1])
 
-            print(sessions)
-            # thread = threading.Thread(target=GererClient, arg=(self.sessions[self.counter-1],))
-            # threads.append(thread)
-            # thread.start()
+            print(self.sessions)
+            thread = threading.Thread(target=GererClient, arg=(self.sessions[self.counter-1],))
+            threads.append(thread)
+            thread.start()
     
 
 
