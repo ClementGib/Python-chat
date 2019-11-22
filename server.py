@@ -1,52 +1,116 @@
-#SUJET LIBRE (jusqua vendredi 11h)
+#SUJET LIBRE 
 #faire une doc
+import socket
+import sys
+import threading
 
 
-import socket, sys
 
-HOST = 'localhost'
-#PORT = 50000
-PORT = 15555
 
-counter = 0	 # compteur de connexions actives
+class Server:
 
-# 1) création du socket :
-mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# 2) liaison du socket à une adresse précise :
-try:
-    mySocket.bind((HOST, PORT))
-except socket.error:
-    print("La liaison du socket à l'adresse choisie a échoué.")
-    sys.exit
+    def GererClient(dico):
+        print("Hello")
 
-while 1:
-    # 3) Attente de la requête de connexion d'un client :
-    print("Serveur prêt, en attente de requêtes ...")
-    mySocket.listen(3)
 
-    # 4) Etablissement de la connexion :
-    connexion, adresse = mySocket.accept()
-    counter +=1
-    print("Client connecté, adresse IP %s, port %s" % (adresse[0], adresse[1]))
 
-    # 5) Dialogue avec le client :
-    msgServeur ="Vous êtes connecté au serveur Marcel. Envoyez vos messages."
-    connexion.send(msgServeur.encode("Utf8"))
-    msgClient = connexion.recv(1024).decode("Utf8")
-    while 1:
-        print("C>", msgClient)
-        if msgClient.upper() == "FIN" or msgClient =="":
-            break
-        msgServeur = input("S> ")
-        connexion.send(msgServeur.encode("Utf8"))
-        msgClient = connexion.recv(1024).decode("Utf8")
 
-    # 6) Fermeture de la connexion :
-    connexion.send("fin".encode("Utf8"))
-    print("Connexion interrompue.")
-    connexion.close()
+    def GererSession(self):
+        threads = []
+        while 1:
+            #Attente de la requête de connexion d'un client :
+            print("Serveur de chat prêt, attente de connexion")
+            self.mySocket.listen(5)
 
-    ch = input("<R>ecommencer <T>erminer ? ")
-    if ch.upper() =='T':
-        break
+            #Connexion et ajout de l'host et de l'ip au dictionaire (VERIFIER) :
+            connexion, adresse = self.mySocket.accept()
+            self.counter +=1
+            self.sessions[connexion] = adresse        
+            #print("Client connecté, adresse IP et port : %s" % (self.sessions[self.counter-1])
+
+            print(sessions)
+            # thread = threading.Thread(target=GererClient, arg=(self.sessions[self.counter-1],))
+            # threads.append(thread)
+            # thread.start()
+    
+
+
+
+
+
+    # constructeur
+    def __init__(self,host,port):
+
+        self.HOST = host
+        self.PORT = port
+
+
+        # compteur de connexions actives
+        self.counter = 0	
+        self.sessions = {}
+
+        #Création du socket
+        self.mySocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #liaison du socket à une adresse précise :
+        try:
+            self.mySocket.bind((self.HOST, self.PORT))
+        except socket.error:
+            print("La liaison du socket à l'adresse choisie a échoué.")
+            sys.exit
+
+
+
+
+
+    def GererCommand(message):
+        if message == '/END':
+            #Fermeture de la connexion :
+            connexion.send("fin".encode("Utf8"))
+            print("Connexion interrompue.")
+            connexion.close()
+        
+            return 1
+
+        elif message == '/LIST':
+        #lister les utilisateur connecté
+            print("Lister les utilisateurs ")
+
+        elif message == '/CHANGE':
+            print("Changer d'utilisateur : ")
+
+
+
+    # def Listen():
+        
+        # # 5) Dialogue avec le client :
+        # msgServeur ="Vous êtes connecté au serveur de chat. entrer votre commande"
+        # connexion.send(msgServeur.encode("Utf8"))
+        # msgClient = connexion.recv(1024).decode("Utf8")
+        # while 1:
+        #     print("C>", msgClient)
+        #     if msgClient[0] == "/" :
+        #         value = self.GererCommand(  
+        #         msgServeur = input("S> ")
+        #         connexion.send(msgServeur.encode("Utf8"))
+        #         msgClient = connexion.recv(1024).decode("Utf8")
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
